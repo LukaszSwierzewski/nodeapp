@@ -16,13 +16,15 @@ const getProductsFromFile = (cb) => {
 };
 
 module.exports = class Product {
-  constructor(title, description, price) {
+  constructor(title, description, price, image) {
     this.title = title;
     this.description = description;
     this.price = price;
+    this.image = image;
   }
 
   save() {
+    this.id = Math.random().toString();
     const p = path.join(
       path.dirname(process.mainModule.filename),
       "data",
@@ -42,5 +44,11 @@ module.exports = class Product {
 
   static fetchAll(cb) {
     getProductsFromFile(cb);
+  }
+  static findById(id, cb) {
+    getProductsFromFile((products) => {
+      const product = products.find((p) => p.id === id);
+      cb(product);
+    });
   }
 };
