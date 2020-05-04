@@ -1,21 +1,25 @@
 {
-  "name": "nodeudemy",
+  "name": "nodejs-complete-guide",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Complete Node.js Guide",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "start-server": "node app.js"
   },
-  "author": "",
+  "author": "Maximilian Schwarzmüller",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.3"
+    "nodemon": "^1.18.3"
   },
   "dependencies": {
-    "body-parser": "^1.19.0",
-    "ejs": "^3.1.2",
-    "express": "^4.17.1",
-    "express-handlebars": "^4.0.3",
-    "pug": "^2.0.4"
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "mysql2": "^2.1.0",
+    "pug": "^2.0.3",
+    "sequelize": "^5.21.7"
   }
 }
