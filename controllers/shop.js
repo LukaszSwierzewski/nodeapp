@@ -2,7 +2,7 @@ const Product = require("../models/product");
 const Order = require("../models/order");
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  Product.fetchAll()
     .then((products) => {
       res.render("shop/product-list", {
         prods: products,
@@ -14,27 +14,19 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.getProduct = (req, res, next) => {
-  const prodId = req.params.productId;
-  Product.findAll({ where: { id: prodId } }).then((products) => {
+  const prodId = req.params.productId; //musi byc takie samo jak w routes shop.js
+
+  Product.findById(prodId).then((products) => {
     res.render("shop/product-detail", {
-      product: products[0],
-      pageTitle: products[0].title,
+      product: products,
+      pageTitle: products.title,
       path: "/products",
     });
   });
-  // Product.findByPk(prodId)
-  //   .then((product) => {
-  //     res.render("shop/product-detail", {
-  //       product: product,
-  //       pageTitle: product.title,
-  //       path: "/",
-  //     });
-  //   })
-  //   .catch((err) => console.log(err));
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.findAll()
+  Product.fetchAll()
     .then((products) => {
       res.render("shop/index", {
         prods: products,
@@ -45,43 +37,43 @@ exports.getIndex = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-exports.getCart = (req, res, next) => {
-  req.user
-    .getCart()
-    .then((cart) => {
-      return cart
-        .getProducts()
-        .then((products) => {
-          res.render("shop/cart", {
-            path: "/cart",
-            pageTitle: "Your Cart",
-            products,
-          });
-        })
-        .catch((err) => console.log(err));
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  // Cart.getCart((cart) => {
-  //   Product.fetchAll((products) => {
-  //     const cartProducts = [];
-  //     for (product of products) {
-  //       const cartProductData = cart.products.find(
-  //         (prod) => prod.id === product.id
-  //       );
-  //       if (cartProductData) {
-  //         cartProducts.push({ productData: product, qty: cartProductData.qty });
-  //       }
-  //     }
-  //     res.render("shop/cart", {
-  //       path: "/cart",
-  //       pageTitle: "Your Cart",
-  //       products: cartProducts,
-  //     });
-  //   });
-  // });
-};
+// exports.getCart = (req, res, next) => {
+//   req.user
+//     .getCart()
+//     .then((cart) => {
+//       return cart
+//         .getProducts()
+//         .then((products) => {
+//           res.render("shop/cart", {
+//             path: "/cart",
+//             pageTitle: "Your Cart",
+//             products,
+//           });
+//         })
+//         .catch((err) => console.log(err));
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// Cart.getCart((cart) => {
+//   Product.fetchAll((products) => {
+//     const cartProducts = [];
+//     for (product of products) {
+//       const cartProductData = cart.products.find(
+//         (prod) => prod.id === product.id
+//       );
+//       if (cartProductData) {
+//         cartProducts.push({ productData: product, qty: cartProductData.qty });
+//       }
+//     }
+//     res.render("shop/cart", {
+//       path: "/cart",
+//       pageTitle: "Your Cart",
+//       products: cartProducts,
+//     });
+//   });
+// });
+// };
 
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
