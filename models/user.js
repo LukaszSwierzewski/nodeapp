@@ -90,6 +90,32 @@ class User {
         console.log(err);
       });
   }
+  addOrder() {
+    const db = getDb();
+    const id = new mongodb.ObjectId(this._id);
+    return this.getCart()
+      .then((products) => {
+        const order = {
+          items: products,
+          user: {
+            _id: id,
+            name: this.username,
+          },
+        };
+        return db.collection("orders").insertOne(order);
+      })
+      .then((result) => {
+        this.cart = { items: [] };
+        return db
+          .collection("users")
+          .updateOne({ _id: id }, { $set: { cart: { items: [] } } });
+      });
+  }
+  getOrders() {
+    const db = getDb();
+    const id = new mongodb.ObjectId(this._id);
+    return db.collection("orders").find({ "user._id": id }).toArray();
+  }
 }
 
 module.exports = User;
